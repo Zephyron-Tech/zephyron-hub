@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// Data models
+// ==========================================
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String // V DB bude uložený hash hesla
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relace: Uživatel může vytvořit mnoho výdajů
+  expenses Expense[]
+  // Relace: Uživatel může být přiřazen k mnoha úkolům
+  tasks    Task[]
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String? // Otazník znamená, že pole je volitelné
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relace: Projekt má mnoho úkolů
+  tasks Task[]
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      String   @default("backlog") // 'backlog', 'todo', 'inprogress', 'done'
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relace s projektem (každý úkol patří k jednomu projektu)
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int     @map("project_id")
+
+  // Relace s uživatelem (každý úkol může být přiřazen jednomu uživateli)
+  assignee   User? @relation(fields: [assigneeId], references: [id])
+  assigneeId Int?  @map("assignee_id")
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal
+  description String
+  category    String
+  expenseDate DateTime @map("expense_date")
+  receiptUrl  String?  @map("receipt_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relace s uživatelem (každý výdaj zadal jeden uživatel)
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int  @map("author_id")
+}
+
+model Revenue {
+  id           Int      @id @default(autoincrement())
+  amount       Decimal
+  description  String
+  revenueDate  DateTime @map("revenue_date")
+  createdAt    DateTime @default(now()) @map("created_at")
+}
