@@ -2,8 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserInfo, DashboardContent, SignOutButton } from "@/components/dashboard";
-import { getStoredToken, decodeToken, isTokenExpired, DecodedToken, clearAuth } from "@/lib/auth.utils";
+import {
+  UserInfo,
+  DashboardContent,
+} from "@/components/dashboard";
+import {
+  getStoredToken,
+  decodeToken,
+  isTokenExpired,
+  DecodedToken,
+  clearAuth,
+} from "@/lib/auth.utils";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -31,7 +40,11 @@ export default function DashboardPage() {
   }, [router]);
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
   }
 
   if (!user) {
@@ -39,13 +52,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="bg-slate-950 min-h-screen min-w-screen p-8">
+      <div className="max-w-full mx-auto">
         <UserInfo user={user} />
         <DashboardContent />
-        <div className="flex gap-4">
-          <SignOutButton />
-        </div>
       </div>
     </div>
   );

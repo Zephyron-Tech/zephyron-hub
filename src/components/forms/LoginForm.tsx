@@ -30,12 +30,12 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 bg-white rounded-lg shadow-md w-96">
-      <h2 className="mb-6 text-2xl font-bold text-center">Sign In</h2>
-      {error && <p className="mb-4 text-center text-red-500">{error}</p>}
+    <form onSubmit={handleSubmit} className="p-8 bg-slate-800 rounded-lg shadow-md w-96">
+      <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">Sign In</h2>
+      {error && <p className="mb-4 text-center text-red-400">{error}</p>}
 
       <div className="mb-4">
-        <label className="block mb-2 text-sm font-medium text-gray-700">
+        <label className="block mb-2 text-sm font-medium text-gray-300">
           Email
         </label>
         <Input
@@ -47,7 +47,7 @@ export const LoginForm = () => {
       </div>
 
       <div className="mb-6">
-        <label className="block mb-2 text-sm font-medium text-gray-700">
+        <label className="block mb-2 text-sm font-medium text-gray-300">
           Password
         </label>
         <Input
@@ -62,9 +62,9 @@ export const LoginForm = () => {
         Sign In
       </Button>
 
-      <p className="mt-4 text-center text-sm text-gray-600">
-        Do not have an account?{" "}
-        <Link href="/register" className="text-blue-600 hover:underline">
+      <p className="mt-4 text-center text-sm text-gray-400">
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="text-blue-400 hover:text-blue-300">
           Create one
         </Link>
       </p>

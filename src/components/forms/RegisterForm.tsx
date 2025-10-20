@@ -50,11 +50,11 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-96">
-      <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+    <form onSubmit={handleSubmit} className="space-y-4 w-96 p-8 bg-slate-800 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-100">Register</h2>
 
       {error && (
-        <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div className="p-3 bg-red-900 border border-red-700 text-red-200 rounded">
           {error}
         </div>
       )}
@@ -95,9 +95,9 @@ export default function RegisterForm() {
         {loading ? "Registering..." : "Create Account"}
       </Button>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-gray-400">
         Already have an account?{" "}
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/login" className="text-blue-400 hover:text-blue-300">
           Sign in
         </Link>
       </p>
