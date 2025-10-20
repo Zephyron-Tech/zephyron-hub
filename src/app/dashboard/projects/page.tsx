@@ -3,20 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  UserInfo,
-  DashboardContent,
-  DashboardNav,
-} from "@/components/dashboard";
-import {
   getStoredToken,
   decodeToken,
   isTokenExpired,
   DecodedToken,
   clearAuth,
 } from "@/lib/auth.utils";
-import MyTasksWidgetClient from "./components/MyTasksWidgetClient";
+import { UserInfo, DashboardNav } from "@/components/dashboard";
+import ProjectList from "./components/ProjectList";
 
-export default function DashboardPage() {
+export default function ProjectsPage() {
   const router = useRouter();
   const [user, setUser] = useState<DecodedToken | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,8 +39,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
+      <div className="flex items-center justify-center min-h-screen bg-slate-950">
+        <p className="text-gray-400">Loading...</p>
       </div>
     );
   }
@@ -55,11 +51,10 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-slate-950 min-h-screen min-w-screen p-8">
-      <div className="max-w-full mx-auto">
+      <div className="max-w-7xl mx-auto">
         <UserInfo user={user} />
         <DashboardNav />
-        <DashboardContent />
-        <MyTasksWidgetClient />
+        <ProjectList />
       </div>
     </div>
   );
