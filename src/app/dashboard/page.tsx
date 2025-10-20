@@ -13,6 +13,7 @@ import {
   DecodedToken,
   clearAuth,
 } from "@/lib/auth.utils";
+import MyTasksWidgetClient from "./components/MyTasksWidgetClient";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -56,6 +57,7 @@ export default function DashboardPage() {
       <div className="max-w-full mx-auto">
         <UserInfo user={user} />
         <DashboardContent />
+        <MyTasksWidgetClient />
       </div>
     </div>
   );
