@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,95 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-// ==========================================
-// Data models
-// ==========================================
-
-model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Microsoft OAuth fields
-  microsoftAccessToken  String?   @db.Text
-  microsoftRefreshToken String?   @db.Text
-  microsoftTokenExpiry  DateTime?
-  
-  accounts      Account[]
-  sessions      Session[]
-  tasks         Task[]    @relation("TaskAssignee")
-  expenses      Expense[]
-}
-
-model Account {
-  id                 Int     @id @default(autoincrement())
-  userId             Int     @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
-
-model Session {
-  id           Int      @id @default(autoincrement())
-  sessionToken String   @unique @map("session_token")
-  userId       Int      @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-  @@map("verificationtokens")
-}
-
-model Project {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String? // Otazník znamená, že pole je volitelné
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  // Relace: Projekt má mnoho úkolů
-  tasks Task[]
-}
-
-model Task {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  status      String   @default("backlog") // 'backlog', 'todo', 'inprogress', 'done'
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  project   Project @relation(fields: [projectId], references: [id])
-  projectId Int     @map("project_id")
-
-  assignee   User? @relation("TaskAssignee", fields: [assigneeId], references: [id])
-  assigneeId Int?  @map("assignee_id")
 }
 
 model Expense {
@@ -107,16 +15,85 @@ model Expense {
   expenseDate DateTime @map("expense_date")
   receiptUrl  String?  @map("receipt_url")
   createdAt   DateTime @default(now()) @map("created_at")
+  authorId    Int      @map("author_id")
+  author      User     @relation(fields: [authorId], references: [id])
+}
 
-  // Relace s uživatelem (každý výdaj zadal jeden uživatel)
-  author   User @relation(fields: [authorId], references: [id])
-  authorId Int  @map("author_id")
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  tasks       Task[]
 }
 
 model Revenue {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal
+  description String
+  revenueDate DateTime @map("revenue_date")
+  createdAt   DateTime @default(now()) @map("created_at")
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      String   @default("backlog")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  projectId   Int      @map("project_id")
+  assigneeId  Int?     @map("assignee_id")
+  assignee    User?    @relation(fields: [assigneeId], references: [id])
+  project     Project  @relation(fields: [projectId], references: [id])
+}
+
+model User {
+  id                    Int        @id @default(autoincrement())
+  name                  String
+  email                 String     @unique
+  password              String?
+  createdAt             DateTime   @default(now()) @map("created_at")
+  microsoftAccessToken  String?    @map("microsoft_access_token")
+  microsoftRefreshToken String?    @map("microsoft_refresh_token")
+  microsoftTokenExpiry  DateTime?  @map("microsoft_token_expiry")
+  updatedAt             DateTime   @default(now()) @map("updated_at")
+  expenses              Expense[]
+  tasks                 Task[]
+  accounts              accounts[]
+  sessions              sessions[]
+}
+
+model accounts {
+  id                 Int     @id @default(autoincrement())
+  userId             Int     @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refreshToken       String? @map("refresh_token")
+  accessToken        String? @map("access_token")
+  expiresAt          Int?    @map("expires_at")
+  tokenType          String? @map("token_type")
+  scope              String?
+  idToken            String? @map("id_token")
+  sessionState       String? @map("session_state")
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model sessions {
   id           Int      @id @default(autoincrement())
-  amount       Decimal
-  description  String
-  revenueDate  DateTime @map("revenue_date")
-  createdAt    DateTime @default(now()) @map("created_at")
+  sessionToken String   @unique @map("session_token")
+  userId       Int      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model verificationtokens {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
