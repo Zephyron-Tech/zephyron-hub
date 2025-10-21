@@ -39,23 +39,14 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    if (!status) {
+    if (!status || typeof status !== 'string') {
       return NextResponse.json(
-        { error: "Status is required" },
+        { error: "Status is required and must be a string" },
         { status: 400 }
       );
     }
 
-    // Validate status value
-    const validStatuses = ["backlog", "todo", "inprogress", "done"];
-    if (!validStatuses.includes(status.toLowerCase())) {
-      return NextResponse.json(
-        { error: "Invalid status. Must be one of: backlog, todo, inprogress, done" },
-        { status: 400 }
-      );
-    }
-
-    // Check if task exists and belongs to the user
+    // Check if task exists and belongs to the user first
     const existingTask = await prisma.task.findUnique({
       where: { id: taskId },
     });
@@ -75,10 +66,34 @@ export async function PATCH(
       );
     }
 
+    // Validate status value - if invalid, return current task without error
+    const validStatuses = ["backlog", "todo", "inprogress", "done"];
+    const normalizedStatus = status.toLowerCase();
+    
+    if (!validStatuses.includes(normalizedStatus)) {
+      // Return the task with its current status (no update, no error)
+      return NextResponse.json(
+        {
+          message: "Invalid status, task unchanged",
+          task: {
+            ...existingTask,
+            project: await prisma.project.findUnique({
+              where: { id: existingTask.projectId },
+            }),
+            assignee: await prisma.user.findUnique({
+              where: { id: existingTask.assigneeId || undefined },
+              select: { id: true, name: true, email: true },
+            }),
+          },
+        },
+        { status: 200 }
+      );
+    }
+
     // Update the task
     const updatedTask = await prisma.task.update({
       where: { id: taskId },
-      data: { status: status.toLowerCase() },
+      data: { status: normalizedStatus },
       include: {
         project: true,
         assignee: {

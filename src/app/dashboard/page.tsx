@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-slate-950 min-h-screen min-w-screen p-8">
-      <div className="max-w-full mx-auto">
+      <div className="max-w-7xl mx-auto">
         <UserInfo user={user} />
         <DashboardNav />
         <DashboardContent />

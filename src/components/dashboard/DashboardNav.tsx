@@ -44,7 +44,7 @@ export const DashboardNav = () => {
   ];
 
   return (
-    <nav className="mb-8 bg-gray-800 rounded-xl p-2 flex gap-2">
+    <nav className="mb-8 bg-slate-800 rounded-xl p-2 flex gap-2">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         return (

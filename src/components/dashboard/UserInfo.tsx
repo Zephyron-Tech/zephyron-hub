@@ -8,8 +8,8 @@ interface UserInfoProps {
 export const UserInfo = ({ user }: UserInfoProps) => (
   <div className="mb-8 flex items-center justify-between">
     <div>
-      <h1 className="text-3xl font-bold mb-1">Zephyron Hub</h1>
-      <p className="text-gray-400">
+      <h1 className="text-3xl font-bold text-gray-50mb-1">Zephyron Hub</h1>
+      <p className="text-gray-300">
         Signed in as: <strong>{user.name}</strong>
       </p>
     </div>

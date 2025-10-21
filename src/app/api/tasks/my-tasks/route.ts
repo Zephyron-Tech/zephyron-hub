@@ -20,13 +20,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch all active tasks assigned to the current user
+    // Fetch all tasks assigned to the current user (including done)
     const tasks = await prisma.task.findMany({
       where: {
         assigneeId: userId,
-        status: {
-          not: "done", // Exclude completed tasks
-        },
       },
       include: {
         project: true, // Include project data for the tag display

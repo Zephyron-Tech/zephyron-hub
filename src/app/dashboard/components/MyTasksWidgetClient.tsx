@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getStoredToken, getCurrentUser } from "@/lib/auth.utils";
-import TaskList from "./TaskList";
+import KanbanBoard from "./KanbanBoard";
 import { Button, Modal } from "@/components/ui";
 import NewTaskForm from "./NewTaskForm";
 
@@ -81,12 +81,15 @@ export default function MyTasksWidgetClient() {
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+    <div className="bg-slate-800 rounded-xl p-6 shadow-lg">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white">
-          My To-Do List
-        </h2>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-50">My Tasks</h2>
+          <p className="text-gray-400 text-sm mt-1">
+            Drag and drop tasks between columns to update their status
+          </p>
+        </div>
         <Button 
           onClick={() => setIsModalOpen(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
@@ -109,17 +112,17 @@ export default function MyTasksWidgetClient() {
         </div>
       )}
 
-      {/* Task List or Empty State */}
+      {/* Kanban Board or Empty State */}
       {!loading && !error && tasks.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-400 text-lg">
-            Clean slate! All tasks are completed. ✨
+            No tasks yet. Create your first task to get started! 🚀
           </p>
         </div>
       )}
 
       {!loading && !error && tasks.length > 0 && (
-        <TaskList initialTasks={tasks} />
+        <KanbanBoard initialTasks={tasks} onTaskUpdate={fetchTasks} />
       )}
 
       {/* New Task Modal */}
