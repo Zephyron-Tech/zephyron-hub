@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
 
     const clientId = process.env.AZURE_CLIENT_ID;
     const tenantId = process.env.AZURE_TENANT_ID;
-    const redirectUri = `${process.env.NEXTAUTH_URL}/api/auth/microsoft/callback`;
+    const redirectUri = `${process.env.NEXTAUTH_URL}/api/auth/microsoft/callback`.replace(/([^:]\/)\/+/g, "$1");
+
+    console.log("DEBUG - NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+    console.log("DEBUG - Redirect URI:", redirectUri);
 
     if (!clientId || !tenantId) {
       return NextResponse.json(
