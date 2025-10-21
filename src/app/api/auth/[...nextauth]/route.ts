@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
         });
 
         // Pokud uživatel neexistuje, nebo pokud heslo nesouhlasí, vrátíme null
-        if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
+        if (!user || !user.password || !(await bcrypt.compare(credentials.password, user.password))) {
           // Můžete vrátit null nebo Error objekt
           return null;
         }
