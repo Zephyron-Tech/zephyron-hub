@@ -15,6 +15,7 @@ import {
   clearAuth,
 } from "@/lib/auth.utils";
 import MyTasksWidgetClient from "./components/MyTasksWidgetClient";
+import ObsidianWidget from "./components/ObsidianWidget";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -60,6 +61,7 @@ export default function DashboardPage() {
         <DashboardNav />
         <DashboardContent />
         <MyTasksWidgetClient />
+        <ObsidianWidget />
       </div>
     </div>
   );
