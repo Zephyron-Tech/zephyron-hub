@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BookOpen, Cloud, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, ArrowUpRight } from "lucide-react";
 
 const services = [
   {
@@ -22,6 +22,34 @@ const services = [
     description: "Správa přihlašování a identit",
     href: "https://auth.zephyron.tech",
     delay: "rise-5",
+  },
+  {
+    icon: Github,
+    name: "GitHub",
+    description: "Repozitáře Zephyron Tech organizace",
+    href: "https://github.com/zephyron-tech",
+    delay: "rise-3",
+  },
+  {
+    icon: Triangle,
+    name: "Vercel",
+    description: "Dashboard a deploymenty frontendů",
+    href: "https://vercel.com/jan-vandliceks-projects-9339ab69",
+    delay: "rise-4",
+  },
+  {
+    icon: Server,
+    name: "Hetzner",
+    description: "Cloud Console pro správu VPS",
+    href: "https://console.hetzner.com/",
+    delay: "rise-5",
+  },
+  {
+    icon: Receipt,
+    name: "Fakturoid",
+    description: "Fakturace a účetnictví",
+    href: "https://app.fakturoid.cz/",
+    delay: "rise-3",
   },
 ];
 
@@ -111,10 +139,10 @@ export default function HubPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
             gap: 16,
             width: "100%",
-            maxWidth: 840,
+            maxWidth: 960,
           }}
         >
           {services.map(({ icon: Icon, name, description, href, delay }) => (

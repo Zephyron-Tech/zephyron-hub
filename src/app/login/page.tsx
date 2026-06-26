@@ -5,7 +5,9 @@ import { useEffect } from "react";
 
 export default function LoginPage() {
   useEffect(() => {
-    signIn("authentik", { callbackUrl: "/" });
+    if (process.env.NODE_ENV !== "development") {
+      signIn("authentik", { callbackUrl: "/" });
+    }
   }, []);
 
   return (
