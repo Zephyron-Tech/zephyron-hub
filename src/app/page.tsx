@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, ArrowUpRight } from "lucide-react";
+import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, Kanban, Activity, ArrowUpRight } from "lucide-react";
 
 const services = [
   {
@@ -50,6 +50,20 @@ const services = [
     description: "Fakturace a účetnictví",
     href: "https://app.fakturoid.cz/",
     delay: "rise-3",
+  },
+  {
+    icon: Kanban,
+    name: "Nextcloud Deck",
+    description: "Kanban tabule a správa úkolů",
+    href: null,
+    delay: "rise-4",
+  },
+  {
+    icon: Activity,
+    name: "Uptime Kuma",
+    description: "Monitoring dostupnosti serverů",
+    href: null,
+    delay: "rise-5",
   },
 ];
 
@@ -179,9 +193,87 @@ function ServiceTile({
   Icon: React.ElementType;
   name: string;
   description: string;
-  href: string;
+  href: string | null;
   delay: string;
 }) {
+  const soon = href === null;
+
+  const inner = (
+    <>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 10,
+            background: soon ? "rgba(110, 122, 145, 0.10)" : "rgba(88, 63, 255, 0.12)",
+            border: `1px solid ${soon ? "rgba(110, 122, 145, 0.18)" : "rgba(88, 63, 255, 0.22)"}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Icon size={20} strokeWidth={1.5} style={{ color: soon ? "var(--fg-subtle)" : "var(--violet-400)" }} />
+        </div>
+        {soon ? (
+          <span style={{
+            fontSize: 11,
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--fg-subtle)",
+            background: "rgba(110, 122, 145, 0.12)",
+            border: "1px solid rgba(110, 122, 145, 0.18)",
+            borderRadius: 6,
+            padding: "3px 8px",
+            marginTop: 2,
+          }}>
+            Brzy
+          </span>
+        ) : (
+          <ArrowUpRight size={16} strokeWidth={1.5} style={{ color: "var(--fg-subtle)", marginTop: 4 }} />
+        )}
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: 20,
+            fontWeight: 600,
+            color: soon ? "var(--fg-muted)" : "var(--fg)",
+            letterSpacing: "-0.015em",
+          }}
+        >
+          {name}
+        </h2>
+        <p style={{ fontSize: 14, lineHeight: 1.55, color: "var(--fg-subtle)" }}>{description}</p>
+      </div>
+    </>
+  );
+
+  if (soon) {
+    return (
+      <div
+        className={`rise ${delay}`}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 20,
+          padding: "28px 24px",
+          background: "rgba(6, 18, 42, 0.5)",
+          border: "1px solid var(--border)",
+          borderRadius: 16,
+          opacity: 0.7,
+          cursor: "default",
+        }}
+      >
+        {inner}
+      </div>
+    );
+  }
+
   return (
     <a
       href={href}
@@ -201,39 +293,7 @@ function ServiceTile({
         textDecoration: "none",
       }}
     >
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-        <div
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 10,
-            background: "rgba(88, 63, 255, 0.12)",
-            border: "1px solid rgba(88, 63, 255, 0.22)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
-        >
-          <Icon size={20} strokeWidth={1.5} style={{ color: "var(--violet-400)" }} />
-        </div>
-        <ArrowUpRight size={16} strokeWidth={1.5} style={{ color: "var(--fg-subtle)", marginTop: 4 }} />
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 20,
-            fontWeight: 600,
-            color: "var(--fg)",
-            letterSpacing: "-0.015em",
-          }}
-        >
-          {name}
-        </h2>
-        <p style={{ fontSize: 14, lineHeight: 1.55, color: "var(--fg-muted)" }}>{description}</p>
-      </div>
+      {inner}
     </a>
   );
 }
