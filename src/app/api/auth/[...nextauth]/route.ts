@@ -13,6 +13,9 @@ const handler = NextAuth({
           issuer: process.env.AUTHENTIK_ISSUER,
         }),
       ],
+  session: {
+    maxAge: 24 * 60 * 60, // 24 hodin
+  },
   pages: {
     signIn: "/login",
   },

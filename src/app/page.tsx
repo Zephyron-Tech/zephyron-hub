@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, Kanban, Activity, ArrowUpRight } from "lucide-react";
+import { SignOutButton } from "./SignOutButton";
 
 const services = [
   {
@@ -84,6 +85,9 @@ export default function HubPage() {
         style={{
           padding: "28px clamp(24px, 5vw, 56px)",
           flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <a
@@ -108,6 +112,7 @@ export default function HubPage() {
             </span>
           </div>
         </a>
+        <SignOutButton />
       </header>
 
       {/* Střed — nadpis + dlaždice */}
