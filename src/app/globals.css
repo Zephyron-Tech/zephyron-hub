@@ -126,6 +126,7 @@ p { margin: 0; }
 .rise-3 { animation-delay: 220ms; }
 .rise-4 { animation-delay: 300ms; }
 .rise-5 { animation-delay: 380ms; }
+.rise-6 { animation-delay: 460ms; }
 
 .service-tile:hover {
   border-color: var(--border-strong);

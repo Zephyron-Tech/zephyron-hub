@@ -172,7 +172,7 @@ export default function HubPage() {
         </div>
 
         {/* Status widget */}
-        <div style={{ width: "100%", maxWidth: 960, marginTop: 24 }}>
+        <div className="rise rise-6" style={{ width: "100%", maxWidth: 960, marginTop: 24 }}>
           <StatusWidget />
         </div>
       </div>
