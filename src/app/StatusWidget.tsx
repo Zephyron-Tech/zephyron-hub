@@ -6,6 +6,8 @@ const SLUG = "zephyron";
 interface Monitor {
   id: number;
   name: string;
+  certExpiryDaysRemaining?: number | null;
+  validCert?: boolean | null;
 }
 
 interface Group {
@@ -14,7 +16,7 @@ interface Group {
 }
 
 interface Heartbeat {
-  status: number; // 1=up, 0=down, 2=pending
+  status: number;
   ping: number | null;
 }
 
@@ -24,6 +26,8 @@ interface MonitorStatus {
   status: number;
   ping: number | null;
   uptime24h: number | null;
+  certDays: number | null;
+  validCert: boolean | null;
 }
 
 interface GroupStatus {
@@ -42,7 +46,6 @@ async function fetchStatusData(): Promise<GroupStatus[] | null> {
 
     const pageData = await pageRes.json();
     const heartbeatData = await heartbeatRes.json();
-
     const groups: Group[] = pageData.publicGroupList ?? [];
 
     return groups.map((g) => ({
@@ -57,6 +60,8 @@ async function fetchStatusData(): Promise<GroupStatus[] | null> {
           status: latest?.status ?? 2,
           ping: latest?.ping ?? null,
           uptime24h: uptime !== null ? Math.round(uptime * 100) / 100 : null,
+          certDays: m.certExpiryDaysRemaining ?? null,
+          validCert: m.validCert ?? null,
         };
       }),
     }));
@@ -77,6 +82,13 @@ function statusLabel(status: number): string {
   return "Čeká";
 }
 
+function certColor(days: number, valid: boolean | null): string {
+  if (!valid) return "var(--danger-500)";
+  if (days <= 7) return "var(--danger-500)";
+  if (days <= 30) return "var(--warning-500)";
+  return "var(--success-500)";
+}
+
 export async function StatusWidget() {
   const groups = await fetchStatusData();
   if (!groups || groups.length === 0) return null;
@@ -87,6 +99,7 @@ export async function StatusWidget() {
   const overallColor = anyDown ? "var(--danger-500)" : allUp ? "var(--success-500)" : "var(--warning-500)";
   const overallLabel = anyDown ? "Výpadek" : allUp ? "Vše funguje" : "Degradováno";
   const showGroupHeaders = groups.length > 1;
+  const hasCerts = allMonitors.some((m) => m.certDays !== null);
 
   return (
     <div
@@ -124,7 +137,6 @@ export async function StatusWidget() {
       {/* Skupiny */}
       {groups.map((group, gi) => (
         <div key={group.name}>
-          {/* Hlavička skupiny — jen pokud je skupin víc */}
           {showGroupHeaders && (
             <div
               style={{
@@ -139,7 +151,6 @@ export async function StatusWidget() {
             </div>
           )}
 
-          {/* Monitory skupiny */}
           {group.monitors.map((m, i) => {
             const isLast = i === group.monitors.length - 1;
             const isLastGroup = gi === groups.length - 1;
@@ -155,17 +166,37 @@ export async function StatusWidget() {
                 }}
               >
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: statusColor(m.status), flexShrink: 0 }} />
+
                 <span style={{ flex: 1, fontSize: 14, color: "var(--fg)", fontWeight: 500 }}>{m.name}</span>
+
+                {/* Cert expiry */}
+                {hasCerts && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 500,
+                      color: m.certDays !== null ? certColor(m.certDays, m.validCert) : "var(--fg-subtle)",
+                      minWidth: 60,
+                      textAlign: "right",
+                    }}
+                    title={m.certDays !== null ? `Certifikát vyprší za ${m.certDays} dní` : undefined}
+                  >
+                    {m.certDays !== null ? `SSL ${m.certDays}d` : "—"}
+                  </span>
+                )}
+
                 {m.ping !== null && (
                   <span style={{ fontSize: 12, color: "var(--fg-subtle)", fontFamily: "monospace", minWidth: 54, textAlign: "right" }}>
                     {m.ping} ms
                   </span>
                 )}
+
                 {m.uptime24h !== null && (
                   <span style={{ fontSize: 12, color: "var(--fg-muted)", minWidth: 52, textAlign: "right" }}>
                     {m.uptime24h}%
                   </span>
                 )}
+
                 <span style={{ fontSize: 11, fontWeight: 500, color: statusColor(m.status), minWidth: 46, textAlign: "right" }}>
                   {statusLabel(m.status)}
                 </span>
