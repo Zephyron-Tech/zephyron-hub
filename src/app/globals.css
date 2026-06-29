@@ -34,6 +34,10 @@
   --border:        #15264A;
   --border-strong: #1F325E;
 
+  --success-500: #16A36A;
+  --warning-500: #E89B0C;
+  --danger-500:  #D5263A;
+
   --fg:        var(--slate-50);
   --fg-2:      var(--slate-100);
   --fg-muted:  var(--slate-300);

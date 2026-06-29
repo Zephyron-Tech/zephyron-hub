@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, Kanban, Activity, ArrowUpRight } from "lucide-react";
 import { SignOutButton } from "./SignOutButton";
+import { StatusWidget } from "./StatusWidget";
 
 const services = [
   {
@@ -167,6 +168,11 @@ export default function HubPage() {
           {services.map(({ icon: Icon, name, description, href, delay }) => (
             <ServiceTile key={name} Icon={Icon} name={name} description={description} href={href} delay={delay} />
           ))}
+        </div>
+
+        {/* Status widget */}
+        <div style={{ width: "100%", maxWidth: 960, marginTop: 24 }}>
+          <StatusWidget />
         </div>
       </div>
 
