@@ -56,7 +56,7 @@ const services = [
     icon: Kanban,
     name: "Nextcloud Deck",
     description: "Kanban tabule a správa úkolů",
-    href: null,
+    href: "https://cloud.zephyron.tech/apps/deck/",
     delay: "rise-4",
   },
   {
