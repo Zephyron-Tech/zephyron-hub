@@ -9,7 +9,7 @@ const services = [
     icon: BookOpen,
     name: "Wiki",
     description: "Interní dokumentace a znalostní báze",
-    href: "https://wiki.zephyron.tech",
+    href: "https://wiki.zephyron.tech/home",
     delay: "rise-3",
   },
   {
