@@ -19,17 +19,17 @@ const services = [
     delay: "rise-4",
   },
   {
+    icon: Kanban,
+    name: "Nextcloud Deck",
+    description: "Kanban tabule a správa úkolů",
+    href: "https://cloud.zephyron.tech/apps/deck/",
+    delay: "rise-5",
+  },
+  {
     icon: ShieldCheck,
     name: "Authentik",
     description: "Správa přihlašování a identit",
     href: "https://auth.zephyron.tech",
-    delay: "rise-5",
-  },
-  {
-    icon: Github,
-    name: "GitHub",
-    description: "Repozitáře Zephyron Tech organizace",
-    href: "https://github.com/zephyron-tech",
     delay: "rise-3",
   },
   {
@@ -54,19 +54,19 @@ const services = [
     delay: "rise-3",
   },
   {
-    icon: Kanban,
-    name: "Nextcloud Deck",
-    description: "Kanban tabule a správa úkolů",
-    href: "https://cloud.zephyron.tech/apps/deck/",
+    icon: Github,
+    name: "GitHub",
+    description: "Repozitáře Zephyron Tech organizace",
+    href: "https://github.com/zephyron-tech",
     delay: "rise-4",
   },
-  {
-    icon: Activity,
-    name: "Uptime Kuma",
-    description: "Monitoring dostupnosti serverů",
-    href: "https://status.zephyron.tech/",
-    delay: "rise-5",
-  },
+  // {
+  //   icon: Activity,
+  //   name: "Uptime Kuma",
+  //   description: "Monitoring dostupnosti serverů",
+  //   href: "https://status.zephyron.tech/",
+  //   delay: "rise-5",
+  // },
 ];
 
 export default function HubPage() {
