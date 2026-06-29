@@ -63,7 +63,7 @@ const services = [
     icon: Activity,
     name: "Uptime Kuma",
     description: "Monitoring dostupnosti serverů",
-    href: null,
+    href: "https://status.zephyron.tech/",
     delay: "rise-5",
   },
 ];
