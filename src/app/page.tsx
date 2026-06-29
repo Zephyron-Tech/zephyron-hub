@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { BookOpen, Cloud, ShieldCheck, Github, Triangle, Server, Receipt, Kanban, Activity, ArrowUpRight } from "lucide-react";
+import { BookOpen, Cloud, ShieldCheck, Triangle, Server, Receipt, Kanban, Activity, ArrowUpRight } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 import { SignOutButton } from "./SignOutButton";
 import { StatusWidget } from "./StatusWidget";
 
@@ -54,7 +55,7 @@ const services = [
     delay: "rise-3",
   },
   {
-    icon: Github,
+    icon: SiGithub,
     name: "GitHub",
     description: "Repozitáře Zephyron Tech organizace",
     href: "https://github.com/zephyron-tech",
@@ -225,7 +226,7 @@ function ServiceTile({
             flexShrink: 0,
           }}
         >
-          <Icon size={20} strokeWidth={1.5} style={{ color: soon ? "var(--fg-subtle)" : "var(--violet-400)" }} />
+          <Icon size={20} style={{ color: soon ? "var(--fg-subtle)" : "var(--violet-400)" }} />
         </div>
         {soon ? (
           <span style={{
